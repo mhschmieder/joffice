@@ -41,6 +41,8 @@ import java.util.Locale;
 
 import javax.imageio.ImageIO;
 
+import org.apache.commons.math3.util.FastMath;
+
 import com.mhschmieder.commonstoolkit.branding.ProductBranding;
 import com.mhschmieder.commonstoolkit.io.FileUtilities;
 import com.pdfjet.Align;
@@ -1029,7 +1031,7 @@ public final class PdfTools {
                 chart2Image.drawOn( visualizationPage );
 
                 // Adjust positioning for the next layout elements.
-                legendAdjustmentX = Math.max( legendAdjustmentX, chart2Image.getWidth() );
+                legendAdjustmentX = FastMath.max( legendAdjustmentX, chart2Image.getWidth() );
                 metadataAdjustmentY += chart2Image.getHeight();
             }
         }
