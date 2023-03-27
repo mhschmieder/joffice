@@ -71,12 +71,6 @@
 			<artifactId>poi-scratchpad</artifactId>
 			<version>5.2.1</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.hynnet/pdfjet -->
-		<dependency>
-			<groupId>com.hynnet</groupId>
-			<artifactId>pdfjet</artifactId>
-			<version>7.06</version>
-		</dependency>
 	</dependencies>
 
 	<build>
