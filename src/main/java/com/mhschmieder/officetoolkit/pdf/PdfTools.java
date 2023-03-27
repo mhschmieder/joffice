@@ -60,7 +60,7 @@ import com.pdfjet.PageMode;
 import com.pdfjet.Paragraph;
 import com.pdfjet.Point;
 import com.pdfjet.Table;
-import com.pdfjet.TextFrame;
+import com.pdfjet.TextColumn;
 import com.pdfjet.TextLine;
 
 /**
@@ -75,6 +75,11 @@ import com.pdfjet.TextLine;
  * must instead be based on the free 5.75 release of pdfJet, so we now use the
  * TextFrame class. THE OUTPUT HAS NOT YET BEEN TESTED, as my GUI app is not
  * currently in a fully buildable state.
+ * <p>
+ * NOTE: The recent v7.06 evaluation version of PDFjet now includes TextColumn
+ *  so I have rewritten that code again using the API docs but haven't had an
+ *  application context to test it in yet. I also have found some recent PDF
+ *  libraries that might serve as alternatives, and iTextPDF is now free too.
  * <p>
  * TODO: Consider switching to Apache PdfBox in conjunction with an add-on
  * library such as easytable, ph-pdf-layout, pdfbox-layout, or PdfLayoutManager,
@@ -752,6 +757,9 @@ public final class PdfTools {
         writeFooter( paragraphs, fonts, productBranding, locale );
 
         // Make a Text Frame to host the list of Paragraphs.
+        // NOTE: This is replaced with the older TextColumn based code now
+        //  that it is part of the evaluation copy of PDFjet as v7.06.
+        /*
         final TextFrame textFrame = new TextFrame( paragraphs );
 
         // We seem to have to manually set our positioning on the page.
@@ -759,8 +767,25 @@ public final class PdfTools {
         textFrame.setWidth( PORTRAIT_PAGE_LAYOUT_WIDTH );
         textFrame.setHeight( PORTRAIT_PAGE_LAYOUT_HEIGHT );
 
-        // Add the Text Column to the Front Page.
+        // Add the Text Frame to the Front Page.
         textFrame.drawOn( frontPage );
+        */
+        
+        // Make a Text Column to host the list of Paragraphs.
+        // NOTE: This is a more advanced layout manager than Text Frame, but
+        //  it should be noted that this code was written from scratch as I
+        //  had no Git history of what it was before being replaced by the
+        //  Text Frame class when using an older evaluation copy of PDFjet.
+        final TextColumn textColumn = new TextColumn();
+        for ( final Paragraph paragraph : paragraphs ) {
+            textColumn.addParagraph( paragraph );
+        }
+        textColumn.setPosition( PORTRAIT_LEFT_MARGIN, PORTRAIT_TOP_MARGIN );
+        textColumn.setWidth( PORTRAIT_PAGE_LAYOUT_WIDTH );
+        textColumn.setLineSpacing( PORTRAIT_PAGE_LAYOUT_HEIGHT );
+
+        // Add the Text Column to the Front Page.
+        textColumn.drawOn( frontPage );
     }
 
     // Generic method to write the header for a PDF Report.
