@@ -10,7 +10,7 @@
 	<version>0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>OfficeToolkit</name>
+	<name>officetoolkit</name>
 	<url>https://github.com/mhschmieder/officetoolkit</url>
 	<description>Utilities and custom classes for office-oriented reports, spreadsheets, etc.</description>
 
