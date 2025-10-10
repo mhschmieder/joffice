@@ -30,9 +30,6 @@
  */
 package com.mhschmieder.officetoolkit.xls;
 
-import java.io.InputStream;
-import java.util.List;
-
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
@@ -50,6 +47,9 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTSheet;
+
+import java.io.InputStream;
+import java.util.List;
 
 /**
  * This is a utility class for generating XLS spreadsheets and related objects,
