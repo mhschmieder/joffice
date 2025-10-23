@@ -28,7 +28,7 @@
  *
  * Project: https://github.com/mhschmieder/officetoolkit
  */
-package com.mhschmieder.officetoolkit.xls;
+package com.mhschmieder.joffice.xls;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.BorderStyle;

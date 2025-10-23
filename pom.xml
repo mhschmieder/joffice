@@ -6,12 +6,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.mhschmieder</groupId>
-	<artifactId>officetoolkit</artifactId>
+	<artifactId>joffice</artifactId>
 	<version>0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>officetoolkit</name>
-	<url>https://github.com/mhschmieder/officetoolkit</url>
+	<name>joffice</name>
+	<url>https://github.com/mhschmieder/joffice</url>
 	<description>Utilities and custom classes for office-oriented reports, spreadsheets, etc.</description>
 
 	<licenses>
@@ -23,9 +23,9 @@
 	</licenses>
 
 	<scm>
-		<url>https://github.com/mhschmieder/officetoolkit</url>
-		<connection>scm:git:git://github.com/mhschmieder/officetoolkit.git</connection>
-		<developerConnection>scm:git:git@github.com:mhschmieder/officetoolkit.git</developerConnection>
+		<url>https://github.com/mhschmieder/joffice</url>
+		<connection>scm:git:git://github.com/mhschmieder/joffice.git</connection>
+		<developerConnection>scm:git:git@github.com:mhschmieder/joffice.git</developerConnection>
 	</scm>
 
 	<developers>

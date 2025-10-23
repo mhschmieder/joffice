@@ -36,4 +36,4 @@
  *
  * @author Mark Schmieder
  */
-package com.mhschmieder.officetoolkit.xls;
+package com.mhschmieder.joffice.xls;
