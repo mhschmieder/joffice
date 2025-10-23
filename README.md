@@ -1,5 +1,6 @@
-# officetoolkit
-A Java toolkit for producing presentation documents such as spreadsheets, slides, etc.
+# JOffice
+
+The JOffice library is a Java toolkit for producing presentation documents such as spreadsheets, slides, etc.
 
 Initially this just contains some convenient methods for quickly working with spreadsheet formatting via Apache POI, and some helper methods for producing reports in PDF format using pdfJet, along with some XLS helper methods.
 
