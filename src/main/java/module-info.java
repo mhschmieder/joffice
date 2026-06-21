@@ -28,12 +28,8 @@
  *
  * Project: https://github.com/mhschmieder/joffice
  */
-/**
- * This package contains the joffice Library's utilities and helper methods
- * related to producing office reports in the format of spreadsheets.
- *
- * @version 1.0
- *
- * @author Mark Schmieder
- */
-package com.mhschmieder.joffice.xls;
+module joffice {
+    exports com.mhschmieder.joffice.xls;
+    requires org.apache.poi.ooxml;
+    requires org.apache.poi.poi;
+}
