@@ -58,6 +58,13 @@ import java.util.List;
 public final class XlsUtilities {
 
     /**
+     * The default constructor is disabled, as this is a static utilities
+     * class.
+     */
+    private XlsUtilities() {
+    }
+
+    /**
      * This method serves merely as a sanity check that the Maven integration
      * and builds work properly and also behave correctly inside Eclipse IDE. It
      * will likely get removed once I gain more confidence that I have solved
@@ -65,37 +72,12 @@ public final class XlsUtilities {
      * complex projects with dependencies (this project is quite simple and has
      * no dependencies at this time, until more functionality is added).
      *
-     * @param args
-     *            The command-line arguments for executing this class as the
-     *            main entry point for an application
-     *
+     * @param args The command-line arguments for executing this class as the
+     *             main entry point for an application
      * @since 1.0
      */
     public static void main( final String[] args ) {
         System.out.println( "Hello Maven from OfficeToolkit!" ); //$NON-NLS-1$
-    }
-
-    /**
-     * The default constructor is disabled, as this is a static utilities class.
-     */
-    private XlsUtilities() {}
-
-    public static void addCategoryHeader( final Sheet sheet,
-                                          final Row row,
-                                          final int rowIndex,
-                                          final int columnIndex,
-                                          final int columnSpan,
-                                          final String categoryName,
-                                          final CellStyle categoryHeaderStyle ) {
-        // Write the category header, which may span multiple columns. Use the
-        // Apache POI Merge command for the spanning.
-        final Cell categoryHeader = row.createCell( columnIndex, CellType.STRING );
-        categoryHeader.setCellValue( categoryName );
-        categoryHeader.setCellStyle( categoryHeaderStyle );
-        sheet.addMergedRegion( new CellRangeAddress( rowIndex,
-                                                     rowIndex,
-                                                     columnIndex,
-                                                     ( columnIndex + columnSpan ) - 1 ) );
     }
 
     public static void addCategoryHeaderRow( final Workbook workbook,
@@ -137,69 +119,32 @@ public final class XlsUtilities {
         }
     }
 
-    public static void addCell( final Row row,
-                                final int columnIndex,
-                                final String cellValue,
-                                final CellStyle cellStyle ) {
-        final Cell columnHeader = row.createCell( columnIndex );
-        columnHeader.setCellValue( cellValue );
-        columnHeader.setCellStyle( cellStyle );
-    }
-
-    public static void addColumnHeaders( final Row row,
-                                         final int firstColumnIndex,
-                                         final String[] columnHeaderNames,
-                                         final CellStyle columnHeaderStyle ) {
-        // Write the column headers, which may only use one column each.
-        int columnIndex = firstColumnIndex;
-        for ( final String columnHeaderName : columnHeaderNames ) {
-            addCell( row, columnIndex, columnHeaderName, columnHeaderStyle );
-            columnIndex++;
-        }
-    }
-
-    // This is a method to find the first column that matches an expected
-    // column header, which is an essential part of parsing spreadsheets with
-    // fully or partially known formatting and structure.
-    public static int findFirstColumnToMatch( final Sheet sheet,
-                                              final String columnHeaderToMatch,
-                                              final int columnHeaderRowIndex,
-                                              final int firstColumnToInspect ) {
-        // Look at the header row, just to find the column pair for this trace.
-        final Row headerRow = sheet.getRow( columnHeaderRowIndex );
-        int firstColumnToMatch = firstColumnToInspect;
-        final int numberOfColumns = headerRow.getPhysicalNumberOfCells();
-        for ( int columnIndex =
-                              firstColumnToInspect; columnIndex < numberOfColumns; columnIndex++ ) {
-            final Cell cell = headerRow.getCell( columnIndex );
-            final String columnHeader = cell.getStringCellValue();
-            if ( columnHeaderToMatch.equals( columnHeader ) ) {
-                firstColumnToMatch = columnIndex;
-                break;
-            }
-        }
-
-        return firstColumnToMatch;
-    }
-
-    // This is a convenience method and should not be used inside tight loops.
-    public static Cell getColumnHeader( final Workbook workbook,
-                                        final Row row,
-                                        final int column,
-                                        final String columnLabel ) {
-        final Cell columnHeader = row.createCell( column );
-        columnHeader.setCellValue( columnLabel );
-
-        final CellStyle cellStyle = getColumnHeaderStyle( workbook );
-        columnHeader.setCellStyle( cellStyle );
-
-        return columnHeader;
+    public static void addCategoryHeader( final Sheet sheet,
+                                          final Row row,
+                                          final int rowIndex,
+                                          final int columnIndex,
+                                          final int columnSpan,
+                                          final String categoryName,
+                                          final CellStyle categoryHeaderStyle ) {
+        // Write the category header, which may span multiple columns. Use the
+        // Apache POI Merge command for the spanning.
+        final Cell categoryHeader = row.createCell( columnIndex,
+                                                    CellType.STRING );
+        categoryHeader.setCellValue( categoryName );
+        categoryHeader.setCellStyle( categoryHeaderStyle );
+        sheet.addMergedRegion( new CellRangeAddress( rowIndex,
+                                                     rowIndex,
+                                                     columnIndex,
+                                                     ( columnIndex
+                                                       + columnSpan ) - 1 ) );
     }
 
     public static CellStyle getColumnHeaderStyle( final Workbook workbook ) {
         // By default, style the cell with Black borders all around, and set an
         // Aqua background for the column header to stick out more.
-        return getColumnHeaderStyle( workbook, IndexedColors.BLACK, IndexedColors.LIGHT_TURQUOISE );
+        return getColumnHeaderStyle( workbook,
+                                     IndexedColors.BLACK,
+                                     IndexedColors.LIGHT_TURQUOISE );
     }
 
     public static CellStyle getColumnHeaderStyle( final Workbook workbook,
@@ -250,10 +195,70 @@ public final class XlsUtilities {
         return cellStyle;
     }
 
+    public static void addColumnHeaders( final Row row,
+                                         final int firstColumnIndex,
+                                         final String[] columnHeaderNames,
+                                         final CellStyle columnHeaderStyle ) {
+        // Write the column headers, which may only use one column each.
+        int columnIndex = firstColumnIndex;
+        for ( final String columnHeaderName : columnHeaderNames ) {
+            addCell( row, columnIndex, columnHeaderName, columnHeaderStyle );
+            columnIndex++;
+        }
+    }
+
+    public static void addCell( final Row row,
+                                final int columnIndex,
+                                final String cellValue,
+                                final CellStyle cellStyle ) {
+        final Cell columnHeader = row.createCell( columnIndex );
+        columnHeader.setCellValue( cellValue );
+        columnHeader.setCellStyle( cellStyle );
+    }
+
+    // This is a method to find the first column that matches an expected
+    // column header, which is an essential part of parsing spreadsheets with
+    // fully or partially known formatting and structure.
+    public static int findFirstColumnToMatch( final Sheet sheet,
+                                              final String columnHeaderToMatch,
+                                              final int columnHeaderRowIndex,
+                                              final int firstColumnToInspect ) {
+        // Look at the header row, just to find the column pair for this trace.
+        final Row headerRow = sheet.getRow( columnHeaderRowIndex );
+        int firstColumnToMatch = firstColumnToInspect;
+        final int numberOfColumns = headerRow.getPhysicalNumberOfCells();
+        for ( int columnIndex = firstColumnToInspect;
+              columnIndex < numberOfColumns;
+              columnIndex++ ) {
+            final Cell cell = headerRow.getCell( columnIndex );
+            final String columnHeader = cell.getStringCellValue();
+            if ( columnHeaderToMatch.equals( columnHeader ) ) {
+                firstColumnToMatch = columnIndex;
+                break;
+            }
+        }
+
+        return firstColumnToMatch;
+    }
+
+    // This is a convenience method and should not be used inside tight loops.
+    public static Cell getColumnHeader( final Workbook workbook,
+                                        final Row row,
+                                        final int column,
+                                        final String columnLabel ) {
+        final Cell columnHeader = row.createCell( column );
+        columnHeader.setCellValue( columnLabel );
+
+        final CellStyle cellStyle = getColumnHeaderStyle( workbook );
+        columnHeader.setCellStyle( cellStyle );
+
+        return columnHeader;
+    }
+
     // Get the Workbook from an Input Stream, accounting for Spreadsheet Format,
     // as well as the names of sheets that must be treated for large data vs.
     // using DOM (in order to avoid Out of Memory run-time exceptions).
-    @SuppressWarnings("nls")
+    @SuppressWarnings( "nls" )
     public static Workbook getWorkbook( final InputStream inputStream,
                                         final String spreadsheetFormat,
                                         final boolean useBigDataStrategy,
@@ -262,36 +267,39 @@ public final class XlsUtilities {
 
         try {
             switch ( spreadsheetFormat ) {
-            case "xlsx":
-                // NOTE: In this context, it is too hard to revert the document
-                // once done, and the performance is no better than using the
-                // direct approach via an Input Stream anyway.
-                // final OPCPackage pkg = OPCPackage.open( inputStream );
-                workbook = // new XSSFWorkbook( pkg )
-                         new XSSFWorkbook( inputStream ) {
-                             /**
-                              * Avoid DOM parsing of large sheets.
-                              */
-                             @Override
-                             public void parseSheet( final java.util.Map< String, XSSFSheet > shIdMap,
-                                                     final CTSheet ctSheet ) {
-                                 // Skip parsing this sheet is using the Big
-                                 // Data strategy, or if the sheet is not
-                                 // found in a pre-curated list of large
-                                 // sheets, as DOM is expensive for Big data.
-                                 if ( !useBigDataStrategy || ( largeSheetNames == null )
+                case "xlsx":
+                    // NOTE: In this context, it is too hard to revert the
+                    // document
+                    // once done, and the performance is no better than using
+                    // the
+                    // direct approach via an Input Stream anyway.
+                    // final OPCPackage pkg = OPCPackage.open( inputStream );
+                    workbook = // new XSSFWorkbook( pkg )
+                            new XSSFWorkbook( inputStream ) {
+                                /**
+                                 * Avoid DOM parsing of large sheets.
+                                 */
+                                @Override
+                                public void parseSheet( final java.util.Map< String, XSSFSheet > shIdMap,
+                                                        final CTSheet ctSheet ) {
+                                    // Skip parsing this sheet is using the Big
+                                    // Data strategy, or if the sheet is not
+                                    // found in a pre-curated list of large
+                                    // sheets, as DOM is expensive for Big data.
+                                    if ( !useBigDataStrategy || (
+                                            largeSheetNames == null )
                                          || largeSheetNames.isEmpty()
                                          || !largeSheetNames.contains( ctSheet.getName() ) ) {
-                                     super.parseSheet( shIdMap, ctSheet );
-                                 }
-                             }
-                         };
-                break;
-            case "xls":
-                workbook = new HSSFWorkbook( inputStream );
-                break;
-            default:
-                break;
+                                        super.parseSheet( shIdMap, ctSheet );
+                                    }
+                                }
+                            };
+                    break;
+                case "xls":
+                    workbook = new HSSFWorkbook( inputStream );
+                    break;
+                default:
+                    break;
             }
         }
         catch ( final Exception e ) {
@@ -303,22 +311,23 @@ public final class XlsUtilities {
 
     // Get the Workbook for an Output Stream, accounting for Spreadsheet Format
     // as well as whether to use a Big Data strategy to conserve heap space.
-    @SuppressWarnings("nls")
+    @SuppressWarnings( "nls" )
     public static Workbook getWorkbook( final String spreadsheetFormat,
                                         final boolean useBigDataStrategy ) {
         Workbook workbook = null;
         switch ( spreadsheetFormat ) {
-        case "xlsx":
-            workbook = useBigDataStrategy ? new SXSSFWorkbook() : new XSSFWorkbook();
-            break;
-        case "xls":
-            workbook = new HSSFWorkbook();
-            break;
-        default:
-            break;
+            case "xlsx":
+                workbook = useBigDataStrategy
+                           ? new SXSSFWorkbook()
+                           : new XSSFWorkbook();
+                break;
+            case "xls":
+                workbook = new HSSFWorkbook();
+                break;
+            default:
+                break;
         }
 
         return workbook;
     }
-
 }
