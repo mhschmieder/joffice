@@ -49,6 +49,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTSheet;
 
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -69,15 +70,15 @@ public final class XlsUtilities {
      * and builds work properly and also behave correctly inside Eclipse IDE. It
      * will likely get removed once I gain more confidence that I have solved
      * the well-known issues with Maven inside Eclipse as I move on to more
-     * complex projects with dependencies (this project is quite simple and has
-     * no dependencies at this time, until more functionality is added).
+     * complex projects with dependencies. This library is quite simple and has
+     * no dependencies at this time, until more functionality is added.
      *
      * @param args The command-line arguments for executing this class as the
      *             main entry point for an application
      * @since 1.0
      */
-    public static void main( final String[] args ) {
-        System.out.println( "Hello Maven from OfficeToolkit!" ); //$NON-NLS-1$
+    static void main(final String[] args) {
+        System.out.println( "Hello Maven from OfficeToolkit!" );
     }
 
     public static void addCategoryHeaderRow( final Workbook workbook,
@@ -91,17 +92,13 @@ public final class XlsUtilities {
 
         final Row row = sheet.createRow( rowIndex );
 
-        // calculate the total number of columns, so we can work backwards.
-        // TODO: Use new Java 8 functionality to sum the column spans.
-        int numberOfColumns = 0;
-        for ( final int columnSpan : columnSpans ) {
-            numberOfColumns += columnSpan;
-        }
+        // Calculate the total number of columns, so that we can work backwards.
+        final int numberOfColumns = Arrays.stream( columnSpans ).sum();
 
         // Write the category headers, which may span multiple columns.
         // NOTE: It appears that addMergedRegion() might collapse the number of
-        // columns vs. setting an actual column span value, so we process in
-        // reverse order to see if all the category headers show up that way.
+        //  columns vs. setting an actual column span value, so we process in
+        //  reverse order to see if all the category headers show up that way.
         int columnIndex = ( firstColumnIndex + numberOfColumns ) - 1;
         for ( int i = categoryNames.length - 1; i >= 0; i-- ) {
             final int columnSpan = columnSpans[ i ];
@@ -168,14 +165,14 @@ public final class XlsUtilities {
         cellStyle.setIndention( ( short ) 1 );
 
         // NOTE: Must set the foreground color to the intended background, and
-        // then set a solid foreground fill pattern, to achieve colored cells.
+        //  then set a solid foreground fill pattern, to achieve colored cells.
         cellStyle.setFillForegroundColor( backgroundColor.getIndex() );
         cellStyle.setFillPattern( FillPatternType.SOLID_FOREGROUND );
 
         // Use a bold, italic font, larger than for the data cells.
         final Font font = workbook.createFont();
         font.setFontHeightInPoints( ( short ) 12 );
-        font.setFontName( "Arial" ); //$NON-NLS-1$
+        font.setFontName( "Arial" );
         font.setItalic( true );
         font.setBold( true );
         cellStyle.setFont( font );
@@ -269,10 +266,9 @@ public final class XlsUtilities {
             switch ( spreadsheetFormat ) {
                 case "xlsx":
                     // NOTE: In this context, it is too hard to revert the
-                    // document
-                    // once done, and the performance is no better than using
-                    // the
-                    // direct approach via an Input Stream anyway.
+                    //  document once done, and the performance is no better
+                    //  than using the direct approach via an Input Stream
+                    //  anyway, but compare against newer versions of POI.
                     // final OPCPackage pkg = OPCPackage.open( inputStream );
                     workbook = // new XSSFWorkbook( pkg )
                             new XSSFWorkbook( inputStream ) {
